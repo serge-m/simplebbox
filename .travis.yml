@@ -7,9 +7,9 @@ install: pip install -U tox-travis
 script: tox
 deploy:
   provider: pypi
-  cleanup: false
-  distributions: sdist bdist_wheel
-  user: serge-m
+  edge: true
+  distributions: "sdist bdist_wheel"
+  username: serge-m
   password:
     secure: AqPCa9ke0J73ZSdXmFd7IcQraGwAEl975Lwr7G8WWydS683j/0ApYkZLFGJWp/cyl8e3aGP5SWz8WKXQNvYe8o92rwHijrc7+gZG8FFMAVe473oiSnXQm+Z612X56vYrKQ4avl5989N4JylErJTarjs22iZkCq2yDUw/WDuGAa8HFYOWhhnYLBr5qwui3v2L6aKQR/mMNsd2/+xEoAnsQa/nyXKSB6QX2OCm8/bGJ+dbygAzseu1iThm9qzhlYMGs4a4r7l0PKcCC+n/HChdyBHfT4v0cyPMHq+eE4UEjJ6pzOI+OQGcs04+uCBXKIBELwEQKSAVsa4I4vIdlWJhMJqjmn3JKKjtWpHj3h8Ym2sB/7cZayIB8b0f7d6QVLY6PjT77PKISuhDSfoBMvMTFbktZjggUK1FY1TUZ8zcZ6WXTwWXiIkp7pc7SwJxVOgcj01212lAGfBTYloAulDQ4/L/OxBxgRul9FzIDg5AEWIvhM/bnzku1h2D+9yAvxoRyiiiUHSYyP4V2rafDxkansGj57aYwOydXT7UwmGNJBp6gwQi5PQ6mX8yQYAacEIp/wp4Kma+/TNTAce5XXCHGD2kAbeimZsc0IlApatdwB4VkyMseGGLWQlpEH+WcRPtb2T5gJWdSeCv9TTdLG0K3ivUlaGItvoNUgHnzNsIYQk=
   on:
