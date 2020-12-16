@@ -1,28 +1,17 @@
-# Config file for automatic testing at travis-ci.com
-
 language: python
 python:
 - 3.8
 - 3.7
 - 3.6
-
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
-
-# Command to run tests, e.g. python setup.py test
 script: tox
-
-# Assuming you have installed the travis-ci CLI tool, after you
-# create the Github repo and add it to Travis, run the
-# following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
 deploy:
   provider: pypi
   cleanup: false
   distributions: sdist bdist_wheel
   user: serge-m
   password:
-    secure: XmEc8JPKBMT2nOqE/rwcBRo3uEp/5aaGLQxhgYjaPm6UjJlW9zVawkQgpXNHEJFLx4ByVkjhd2i1eXNt97oPdcMQ24tCjQ0boswieU9c8hI+DBU4u0EQoLabjzcloeWT04ZuXsEYj5xPcgX2RJ4C0yF/EsOaJ6EswrHUknYJueUUPa7+bVefqSU8xFR7iHf/W7LvFqwJNLiasNFMBPbkt71zWM4eB1NoTpz/tg9WCbvH8vQA7/xT8v3swjT/tQDkqpuRqNZ2CmSWTP6Lhr8suBaJlPKV/sWAOE/TjtSmlgmAnTQBCmLolJoEzIMNMhGuWJmM/MZlN1wmStwpS3/kFayXWf3AvC6oUxog02K2IaSz5uF3ZI/wrvBvTDCGmI3S9rbK36wM8azvfqiJJdi+egjT60t/oOeNX672t4IFLqx3X0rwBqaHmhMykr238rBUEgP2arJ9llC3iTsqWOUdsZ6Us5MioFYq6/vVt4gq0rAUL4XQqtrZV6FxKwr+5cXhurSrr50VdfbrrPNJaFTKM/GDbYa2PlIADUNTwr1lYC2zO3gBJ67MW6hxBM+Gsi6/51c/atvC5r1Ft3t4o39vwIrwHs8orJ+HHLsyKdYieW1CC27GO6xotBgZDtX8R950YnZPdDNdh7OsFcblBEXP9I40aqqLOOcHopza2Ilfapg=
+    secure: AqPCa9ke0J73ZSdXmFd7IcQraGwAEl975Lwr7G8WWydS683j/0ApYkZLFGJWp/cyl8e3aGP5SWz8WKXQNvYe8o92rwHijrc7+gZG8FFMAVe473oiSnXQm+Z612X56vYrKQ4avl5989N4JylErJTarjs22iZkCq2yDUw/WDuGAa8HFYOWhhnYLBr5qwui3v2L6aKQR/mMNsd2/+xEoAnsQa/nyXKSB6QX2OCm8/bGJ+dbygAzseu1iThm9qzhlYMGs4a4r7l0PKcCC+n/HChdyBHfT4v0cyPMHq+eE4UEjJ6pzOI+OQGcs04+uCBXKIBELwEQKSAVsa4I4vIdlWJhMJqjmn3JKKjtWpHj3h8Ym2sB/7cZayIB8b0f7d6QVLY6PjT77PKISuhDSfoBMvMTFbktZjggUK1FY1TUZ8zcZ6WXTwWXiIkp7pc7SwJxVOgcj01212lAGfBTYloAulDQ4/L/OxBxgRul9FzIDg5AEWIvhM/bnzku1h2D+9yAvxoRyiiiUHSYyP4V2rafDxkansGj57aYwOydXT7UwmGNJBp6gwQi5PQ6mX8yQYAacEIp/wp4Kma+/TNTAce5XXCHGD2kAbeimZsc0IlApatdwB4VkyMseGGLWQlpEH+WcRPtb2T5gJWdSeCv9TTdLG0K3ivUlaGItvoNUgHnzNsIYQk=
   on:
     tags: true
     repo: serge-m/simplebbox
