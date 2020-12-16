@@ -5,7 +5,6 @@ python:
 - 3.8
 - 3.7
 - 3.6
-- 3.5
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
@@ -19,10 +18,11 @@ script: tox
 # $ travis encrypt --add deploy.password
 deploy:
   provider: pypi
+  edge: true
   distributions: sdist bdist_wheel
-  user: serge-m
+  username: serge-m
   password:
-    secure: E29Q3i6uXz+D8TRiFSruxqqzVFPyGX9rO/yz2lxc0+FQ0zfCz6mxwWhtNnm+AeJl3nBEd5i7cLip0VhYuHnmuEPgNe44vK6OcbfYYGkB1DXnShGBJRO5E4iVELEfTH+v4Cle5M+rkzkSKCV6jZ3eZnIBgUSlfCCxrIzHhtgEw3hVY7R3OYMWwNzVlwM4Y0B9SQWKbNOE8HKLYkboO2h9kh5t28WkcZ038VfbiWOXr7OaA832TDbr6IBGYlb/J4sTckvvBmEHydtrwlsSbBty02fA7Qm18ezkm6IsITVr8F9l8EwotGF+jsdrLMMNyoyQT2XaaB752QukadQaijwl4Gl6XQ+KOxcriuvfmo0mShPZG52iRd/JDDBOyZu5VVCZJ+Bx64HFyRlhWJbfFdho+fdIhPM6A4tRbxAw11NXgdhcXxCr7vnEfhQow3d6SXIAdGJvYGJm/digWXpFwNLVZd7byV5IZaQqWZ5LwhFnuPcvaK6okAMgVypcq1eaC8ry8kmBWqBE5cXRnmgMmfmtp+jW32sXWi6VGHuSc9yvY7CymeSnGHNYuDRQtLvuRgK+44XMsScLZn6QisUExBfDuBrQ462roLCUd+fzvNmVyuFEZPWgpIvugYaiNNSl81zb1LasgauRcg3/OHPSd1XVwyf/1Zyt4I6Ci9lsUtwxMog=
+    secure: fAHa6aLFU8h6ACcEJneTDsUajvTPINyFnGhOj4kKbNSi3ARY6O+cADg8fC/PjFfl1N6fMg5tMUOUC4iQ4KF4i2uy6oNHQNawn1vUcxEAtBcFrl+njkx0AVb0Ac6BWen80DWCREAEWS+oS4TWZ0yxqONO7kA5H/CuZzRX8SjLy1rMiO7myh8JbFKAAE1lyGkdm6zBj3EvdVA9olJaAxCd9QUmfSA+f3U5DXaqAyOFsgCbdTrbGOXIpYo3UZC4raDT5RdsablH2AXINmRtgYCsTOxbMFiZ7OYCsFAzLSj0ona7UQAXiHv6nzGE97ZUJMvcqWLIQlTzG9SXJAy+6cGKAoQEq13nNzfGtu7YmERYRy80iaBA+9lwt5Qerk+ep2yexyadPTpwYwko3tDDFThP92ga09iiIevg3PysWqhfsO9jkFoA0/EePZ8ZB02ru22Z8UtQhBo81pM2usqPp+PuradgyWwMw99lMtHje93aETPhDWxKOcHz1pqueJ2WOtlSZTYc2RSL7dY0hdxiv2IIRkSe8JbrB3ZK/AK5Js/1765Ja9kc/anmlWc6zQ4qSDyreBMtZdqaDwbhdWQBy31iZgR5h+pJmHp45Rjh9KK1xhWOiHE6Kwa4F3+tdncB6wbkEXmwhHqVDWkP1LWQWcUZTl8qSZbY/4fzqFWexG7uNhM=
   on:
     tags: true
     repo: serge-m/simplebbox
