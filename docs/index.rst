@@ -12,6 +12,7 @@ Welcome to SimpleBBox's documentation!
    contributing
    authors
    history
+   alternatives
 
 Indices and tables
 ==================

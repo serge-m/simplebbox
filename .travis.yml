@@ -2,10 +2,10 @@
 
 language: python
 python:
-  - 3.8
-  - 3.7
-  - 3.6
-  - 3.5
+- 3.8
+- 3.7
+- 3.6
+- 3.5
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
@@ -22,7 +22,7 @@ deploy:
   distributions: sdist bdist_wheel
   user: serge-m
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: E29Q3i6uXz+D8TRiFSruxqqzVFPyGX9rO/yz2lxc0+FQ0zfCz6mxwWhtNnm+AeJl3nBEd5i7cLip0VhYuHnmuEPgNe44vK6OcbfYYGkB1DXnShGBJRO5E4iVELEfTH+v4Cle5M+rkzkSKCV6jZ3eZnIBgUSlfCCxrIzHhtgEw3hVY7R3OYMWwNzVlwM4Y0B9SQWKbNOE8HKLYkboO2h9kh5t28WkcZ038VfbiWOXr7OaA832TDbr6IBGYlb/J4sTckvvBmEHydtrwlsSbBty02fA7Qm18ezkm6IsITVr8F9l8EwotGF+jsdrLMMNyoyQT2XaaB752QukadQaijwl4Gl6XQ+KOxcriuvfmo0mShPZG52iRd/JDDBOyZu5VVCZJ+Bx64HFyRlhWJbfFdho+fdIhPM6A4tRbxAw11NXgdhcXxCr7vnEfhQow3d6SXIAdGJvYGJm/digWXpFwNLVZd7byV5IZaQqWZ5LwhFnuPcvaK6okAMgVypcq1eaC8ry8kmBWqBE5cXRnmgMmfmtp+jW32sXWi6VGHuSc9yvY7CymeSnGHNYuDRQtLvuRgK+44XMsScLZn6QisUExBfDuBrQ462roLCUd+fzvNmVyuFEZPWgpIvugYaiNNSl81zb1LasgauRcg3/OHPSd1XVwyf/1Zyt4I6Ci9lsUtwxMog=
   on:
     tags: true
     repo: serge-m/simplebbox
