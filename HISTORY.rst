@@ -2,6 +2,13 @@
 History
 =======
 
+
+0.0.7 (2020-12-17)
+------------------
+
+* Added conversion between relative and absolute coordinates.
+
+
 0.0.6 (2020-12-17)
 ------------------
 
@@ -12,3 +19,4 @@ History
 ------------------
 
 * First release on PyPI.
+

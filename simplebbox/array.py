@@ -1,6 +1,11 @@
 from typing import Union, List, Tuple
 
+float_or_int = Union[float, int]
 list_or_tuple = Union[List, Tuple]
+pair = Union[
+    List[float_or_int],
+    Tuple[float_or_int]
+]
 
 
 def x0y0wh_to_x0y0x1y1(x0y0wh: list_or_tuple) -> list_or_tuple:
@@ -178,4 +183,45 @@ def cxcywh_to_x0y0x1y1_float(cxcywh: list_or_tuple) -> list_or_tuple:
         y0,
         float(x0 + w),
         float(y0 + h)
+    ))
+
+
+def xyxy_abs_to_rel(xyxy: list_or_tuple, image_wh: pair) -> list_or_tuple:
+    """
+    Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from absolute to relative values
+    with respect to image width and height.
+
+    Parameters
+    ----------
+    image_wh : tuple of width and height of image
+
+    >>> xyxy_abs_to_rel([100, 200, 200, 50], [400, 200])
+    [0.25, 1.0, 0.5, 0.25]
+    """
+    x0, y0, x1, y1 = xyxy
+    w, h = image_wh
+    return type(xyxy)((
+        x0 / w, y0 / h,
+        x1 / w, y1 / h
+    ))
+
+
+def xyxy_rel_to_abs_int(xyxy: list_or_tuple, image_wh: pair) -> list_or_tuple:
+    """
+    Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from relative to absolute values
+    with respect to image width and height.
+
+    Parameters
+    ----------
+    xyxy : tuple or list. (x, y, width, height) or (x, y, x, y).
+    image_wh : tuple of width and height of image
+
+    >>> xyxy_rel_to_abs_int([0.25, 1.0, 0.5, 0.25], [400, 200])
+    [100, 200, 200, 50]
+    """
+    x0, y0, x1, y1 = xyxy
+    w, h = image_wh
+    return type(xyxy)((
+        int(x0 * w), int(y0 * h),
+        int(x1 * w), int(y1 * h)
     ))
