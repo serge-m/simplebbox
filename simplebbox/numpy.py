@@ -1,5 +1,7 @@
 import numpy as np
 
+__all__ = ["ltrb_to_ltwh", "ltwh_to_ltrb", "x0y0x1y1_to_x0y0wh", "x0y0wh_to_x0y0x1y1"]
+
 
 def x0y0wh_to_x0y0x1y1(x0y0wh: np.ndarray) -> np.ndarray:
     """
@@ -8,7 +10,8 @@ def x0y0wh_to_x0y0x1y1(x0y0wh: np.ndarray) -> np.ndarray:
     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
 
     >>> x0y0x1y1 = x0y0wh_to_x0y0x1y1(np.array([100, 200, 10, 20]))
-    >>> assert np.array_equal(x0y0x1y1, [100, 200, 110, 220])
+    >>> np.array_equal(x0y0x1y1, [100, 200, 110, 220])
+    True
     """
     return np.asarray([
         x0y0wh[0], x0y0wh[1],
@@ -23,12 +26,13 @@ def x0y0x1y1_to_x0y0wh(x0y0x1y1: np.ndarray) -> np.ndarray:
     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
 
     >>> x0y0wh = x0y0x1y1_to_x0y0wh(np.array([100, 200, 110, 220]))
-    >>> assert np.array_equal(x0y0wh, [100, 200, 10, 20])
+    >>> np.array_equal(x0y0wh, [100, 200, 10, 20])
+    True
     """
-    return np.asarray([
+    return np.asarray((
         x0y0x1y1[0], x0y0x1y1[1],
         x0y0x1y1[2] - x0y0x1y1[0], x0y0x1y1[3] - x0y0x1y1[1]
-    ], dtype=x0y0x1y1.dtype)
+    ), dtype=x0y0x1y1.dtype)
 
 
 ltwh_to_ltrb = x0y0wh_to_x0y0x1y1

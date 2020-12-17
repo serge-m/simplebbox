@@ -30,10 +30,30 @@ The coordinates can represent either
 
 * relative position in the image dimensions. Then `x` takes values from `0..1` for pixels inside the image
 
-* or absolute position in pixel
+* or absolute position in pixel (either integer or floating point numbers)
 
 
 This package contains utility functions to convert between those formats.
+
+
+Basic assumptions
+---------------------
+
+Simple data structures are used: lists, tuples, numpy arrays. They fit well to the output of the deep learning models.
+Speed and simplicity is chosen over type and range safety. For better type safety one can use alternative implementations with
+classes. See `alternatives` page of the docs.
+
+Conversion operations between integer and float numbers are sometimes cumbersome. We are trying to keep it aligned
+with standard python. For example rounding of float numbers while computing a center of a bounding box is done using
+`Round_half_to_even`_ algorithm.
+
+Several functions for different handing of floats/ints are provided for the same operation.
+E.g. `cxcywh_to_x0y0wh_float`, `cxcywh_to_x0y0wh_int`
+
+In simple use cases like a single conversion from one format to another one can probably chose any of the versions for
+float conversions. More thorough selection is needed in case of multiple back and forth conversions.
+
+.. _Round_half_to_even: https://en.wikipedia.org/wiki/Rounding#Round_half_to_even
 
 Installation
 --------------------
