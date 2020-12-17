@@ -62,8 +62,11 @@ Installation
 
    pip install simplebbox
 
-Usage
+
+Usage example
 --------------------
+
+Examples of conversions:
 
 .. code-block::
 
@@ -74,7 +77,6 @@ Usage
 
     # and convert it back:
     x0y0x1y1_to_x0y0wh([100, 200, 110, 220])        # [100, 200, 10, 20]
-
 
 Notes
 --------------------
