@@ -179,7 +179,3 @@ def cxcywh_to_x0y0x1y1_float(cxcywh: list_or_tuple) -> list_or_tuple:
         float(x0 + w),
         float(y0 + h)
     ))
-
-
-ltwh_to_ltrb = x0y0wh_to_x0y0x1y1
-ltrb_to_ltwh = x0y0x1y1_to_x0y0wh
