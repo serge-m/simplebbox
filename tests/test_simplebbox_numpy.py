@@ -24,7 +24,7 @@ class equal_np_array:
     def __eq__(self, other):
         if not isinstance(other, np.ndarray):
             return False
-        return np.array_equal(self.value, other)
+        return self.value.dtype == other.dtype and np.array_equal(self.value, other)
 
 
 class equal_tensor:
@@ -83,11 +83,53 @@ def test_x0y0x1y1_to_x0y0wh():
     assert bbox_torch.x0y0x1y1_to_x0y0wh(torch.tensor([[in1, in2]])) == equal_tensor([[out1, out2]], dtype=torch.long)
 
 
+def test_cxcywh_to_x0y0wh__with_float_as_input():
+    assert bbox_array.cxcywh_to_x0y0wh([100, 200, 10.9, 21.], int) == [94, 189, 10, 21]
+    assert bbox_array.cxcywh_to_x0y0wh([100, 200, 10.9, 21.], round) == [95, 190, 11, 21]
+    assert bbox_array.cxcywh_to_x0y0wh([100, 200, 11, 21]) == approx([94.5, 189.5, 11., 21.])
+    assert bbox_array.cxcywh_to_x0y0wh([100., 200., 11., 21.]) == approx([94.5, 189.5, 11., 21.])
+    assert bbox_array.cxcywh_to_x0y0wh([100, 200, 10.8, 20.8]) == approx([94.6, 189.6, 10.8, 20.8])
+
+
 def test_cxcywh_to_x0y0wh():
-    assert bbox_numpy.x0y0x1y1_to_x0y0wh(np.array(in1)) == equal_np_array(out1, dtype='int')
+    in1 = [100, 200, 10, 20]
+    out1 = [95, 190, 10, 20]
+    in2 = [100, 200, 11, 21]
+    out2_int = [94, 189, 11, 21]
+    out2 = [94.5, 189.5, 11, 21]
 
-    assert bbox_torch.x0y0x1y1_to_x0y0wh(torch.tensor(in1)) == equal_tensor(out1, dtype=torch.long)
+    assert bbox_array.cxcywh_to_x0y0wh(in1, float) == approx(out1)
+    assert bbox_array.cxcywh_to_x0y0wh(in1, int) == out1
+    assert bbox_array.cxcywh_to_x0y0wh(in2, int) == out2_int
+    assert bbox_array.cxcywh_to_x0y0wh(tuple(in1), int) == tuple(out1)
 
+    assert bbox_numpy.cxcywh_to_x0y0wh(np.array(in1)) == equal_np_array(out1, dtype='float')
+    assert bbox_numpy.cxcywh_to_x0y0wh(np.array([[in1, in2]])) == equal_np_array([[out1, out2]], dtype='float')
+
+    assert bbox_torch.cxcywh_to_x0y0wh(torch.tensor(in1)) == equal_tensor(out1, dtype=torch.float)
+    assert bbox_torch.cxcywh_to_x0y0wh(torch.tensor([[in1, in2]])) == equal_tensor([[out1, out2]], dtype=torch.float)
+
+
+def test_cxcywh_to_x0y0wh_int_div():
+    in1 = [100, 200, 10, 20]
+    out1 = [95, 190, 10, 20]
+    in2 = [100, 200, 11, 21]
+    out2 = [95, 190, 11, 21]
+
+    assert bbox_array.cxcywh_to_x0y0wh_int_div(in1, float) == approx(out1)
+    assert bbox_array.cxcywh_to_x0y0wh_int_div(in1, int) == out1
+    assert bbox_array.cxcywh_to_x0y0wh_int_div(in2, int) == out2
+    assert bbox_array.cxcywh_to_x0y0wh_int_div(tuple(in1), int) == tuple(out1)
+
+    assert bbox_numpy.cxcywh_to_x0y0wh_int_div(np.array(in1)) == equal_np_array(out1, dtype='int')
+    assert bbox_numpy.cxcywh_to_x0y0wh_int_div(np.array([[in1, in2]])) == equal_np_array([[out1, out2]], dtype='int')
+
+    assert bbox_torch.cxcywh_to_x0y0wh_int_div(torch.tensor(in1)) == equal_tensor(out1, dtype=torch.long)
+    assert bbox_torch.cxcywh_to_x0y0wh_int_div(torch.tensor([[in1, in2]])) == equal_tensor([[out1, out2]],
+                                                                                           dtype=torch.long)
+
+
+def test2():
     res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 10, 20]))
     np.array_equal(res, [95, 190, 10, 20])
 

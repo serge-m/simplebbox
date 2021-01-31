@@ -22,8 +22,10 @@ class ArrayProcessor:
         """
         arr = x0y0wh
         res = [
-            arr[..., 0], arr[..., 1],
-            arr[..., 0] + arr[..., 2], arr[..., 1] + arr[..., 3]
+            arr[..., 0],
+            arr[..., 1],
+            arr[..., 0] + arr[..., 2],
+            arr[..., 1] + arr[..., 3]
         ]
         return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
@@ -40,19 +42,18 @@ class ArrayProcessor:
         """
         arr = x0y0x1y1
         res = [
-            arr[..., 0], arr[..., 1],
-            arr[..., 2] - arr[..., 0], arr[..., 3] - arr[..., 1]
+            arr[..., 0],
+            arr[..., 1],
+            arr[..., 2] - arr[..., 0],
+            arr[..., 3] - arr[..., 1]
         ]
         return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
-    def cxcywh_to_x0y0wh(self, cxcywh, convert_fn=lambda x: x):
+    def cxcywh_to_x0y0wh(self, cxcywh):
         """
         Converts a bounding box from format
         (center x, center y, width, height) to
         (min x, min y, width, height).
-
-        Rounding function can be specified as a parameter :convert_fn:
-        get integer values instead of float.
 
         In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
 
@@ -62,39 +63,31 @@ class ArrayProcessor:
         """
         arr = cxcywh
         res = [
-            convert_fn(arr[..., 0] - arr[..., 2] / 2), convert_fn(arr[..., 1] - arr[..., 2] / 2),
-            convert_fn(arr[..., 2]), convert_fn(arr[..., 3])
+            arr[..., 0] - arr[..., 2] / 2,
+            arr[..., 1] - arr[..., 3] / 2,
+            arr[..., 2],
+            arr[..., 3]
         ]
         return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
-#
-# def cxcywh_to_x0y0wh_trunc_int(cxcywh: np.ndarray, dtype=np.int) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (center x, center y, width, height) to
-#     integer (min x, min y, width, height) using only integer operations.
-#     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-#
-#     >>> cxcywh_to_x0y0wh_trunc_int([100, 200, 10, 20])
-#     [95, 190, 10, 20]
-#     >>> cxcywh_to_x0y0wh_trunc_int([100, 200, 11, 21])
-#     [95, 190, 11, 21]
-#     >>> cxcywh_to_x0y0wh_trunc_int([100., 200., 11., 21.])
-#     [95, 190, 11, 21]
-#     >>> cxcywh_to_x0y0wh_trunc_int([100, 200, 10.8, 21.8])
-#     [95, 190, 10, 21]
-#     >>> cxcywh_to_x0y0wh_trunc_int([100.5, 200.5, 10., 20.])
-#     [95, 190, 10, 20]
-#     """
-#     assert dtype.is_integer()
-#     cx, cy, w, h = cxcywh
-#     x0 = cx - w // 2
-#     y0 = cy - h // 2
-#     return np.asarray((
-#         x0,
-#         y0,
-#         w,
-#         h
-#     ), dtype=dtype)
+    def cxcywh_to_x0y0wh_int_div(self, cxcywh):
+        """
+        Converts a bounding box from format
+        (center x, center y, width, height) to
+        (min x, min y, width, height)
+        using integer operations (division).
+
+        In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
+        """
+        arr = cxcywh
+        res = [
+            arr[..., 0] - arr[..., 2] // 2,
+            arr[..., 1] - arr[..., 3] // 2,
+            arr[..., 2],
+            arr[..., 3]
+        ]
+        return self.stack(res).reshape(*arr.shape[:-1], len(res))
+
 #
 #
 # def cxcywh_to_x0y0wh_float(cxcywh: np.ndarray) -> np.ndarray:
