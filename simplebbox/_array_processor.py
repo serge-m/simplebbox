@@ -88,96 +88,45 @@ class ArrayProcessor:
         ]
         return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
-#
-#
-# def cxcywh_to_x0y0wh_float(cxcywh: np.ndarray) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (center x, center y, width, height) to
-#     float (min x, min y, width, height).
-#     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-#     """
-#
-#     return type(cxcywh)((
-#         cxcywh[0] - cxcywh[2] / 2.0,
-#         cxcywh[1] - cxcywh[3] / 2.0,
-#         float(cxcywh[2]),
-#         float(cxcywh[3])
-#     ))
-#
-#
-# def cxcywh_to_x0y0x1y1_round_int(cxcywh: np.ndarray) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (center x, center y, width, height) to
-#     integer (min x, min y, max x, max y). Floats are rounded.
-#     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-#
-#     >>> cxcywh_to_x0y0x1y1_round_int([100, 200, 10, 20])
-#     [95, 190, 105, 210]
-#     >>> cxcywh_to_x0y0x1y1_round_int([100, 200, 11, 21])
-#     [94, 190, 105, 211]
-#     >>> cxcywh_to_x0y0x1y1_round_int([100., 200., 11., 21.])
-#     [94, 190, 105, 211]
-#     >>> cxcywh_to_x0y0x1y1_round_int([100, 200, 10.8, 21.8])
-#     [95, 189, 106, 211]
-#     >>> cxcywh_to_x0y0x1y1_round_int([100.5, 200.5, 10., 20.])
-#     [96, 190, 106, 210]
-#     """
-#     cx, cy, w, h = cxcywh
-#     x0 = round(cx - w / 2)
-#     y0 = round(cy - h / 2)
-#     return type(cxcywh)((
-#         x0,
-#         y0,
-#         x0 + round(w),
-#         y0 + round(h)
-#     ))
-#
-#
-# def cxcywh_to_x0y0x1y1_trunc_int(cxcywh: np.ndarray) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (center x, center y, width, height) to
-#     integer (min x, min y, max x, max y) using only integer operations.
-#     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-#
-#     >>> cxcywh_to_x0y0x1y1_trunc_int([100, 200, 10, 20])
-#     [95, 190, 105, 210]
-#     >>> cxcywh_to_x0y0x1y1_trunc_int([100, 200, 11, 21])
-#     [95, 190, 106, 211]
-#     >>> cxcywh_to_x0y0x1y1_trunc_int([100., 200., 11., 21.])
-#     [95, 190, 106, 211]
-#     >>> cxcywh_to_x0y0x1y1_trunc_int([100, 200, 10.8, 21.8])
-#     [95, 190, 105, 211]
-#     >>> cxcywh_to_x0y0x1y1_trunc_int([100.5, 200.5, 10., 20.])
-#     [95, 190, 105, 210]
-#     """
-#     cx, cy, w, h = cxcywh
-#     x0 = cx - w // 2
-#     y0 = cy - h // 2
-#     return type(cxcywh)((
-#         int(x0),
-#         int(y0),
-#         int(x0 + w),
-#         int(y0 + h)
-#     ))
-#
-#
-# def cxcywh_to_x0y0x1y1_float(cxcywh: np.ndarray) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (center x, center y, width, height) to
-#     float (min x, min y, max x, max y).
-#     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-#     """
-#     cx, cy, w, h = cxcywh
-#     x0 = cx - w / 2.
-#     y0 = cy - h / 2.
-#     return type(cxcywh)((
-#         x0,
-#         y0,
-#         float(x0 + w),
-#         float(y0 + h)
-#     ))
-#
-#
+    def cxcywh_to_x0y0x1y1(self, cxcywh):
+        """
+        Converts a bounding box from format
+        (center x, center y, width, height) to
+        (min x, min y, max x, max y).
+
+        In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
+        """
+        arr = cxcywh
+        x0 = arr[..., 0] - arr[..., 2] / 2
+        y0 = arr[..., 1] - arr[..., 3] / 2
+        res = [
+            x0,
+            y0,
+            x0 + arr[..., 2],
+            y0 + arr[..., 3]
+        ]
+        return self.stack(res).reshape(*arr.shape[:-1], len(res))
+
+    def cxcywh_to_x0y0x1y1_int_div(self, cxcywh):
+        """
+        Converts a bounding box from format
+        (center x, center y, width, height) to
+        (min x, min y, max x, max y) using only integer division.
+
+        In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
+        """
+        arr = cxcywh
+        x0 = arr[..., 0] - arr[..., 2] // 2
+        y0 = arr[..., 1] - arr[..., 3] // 2
+        res = [
+            x0,
+            y0,
+            x0 + arr[..., 2],
+            y0 + arr[..., 3]
+        ]
+        return self.stack(res).reshape(*arr.shape[:-1], len(res))
+
+
 # def xyxy_abs_to_rel(xyxy: np.ndarray, image_wh: np.ndarray) -> np.ndarray:
 #     """
 #     Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from absolute to relative values
