@@ -9,14 +9,6 @@ from simplebbox.array import x0y0wh_to_x0y0x1y1, x0y0x1y1_to_x0y0wh, \
     cxcywh_to_x0y0x1y1_float
 
 
-def test_x0y0wh_to_x0y0x1y1():
-    assert x0y0wh_to_x0y0x1y1([100, 200, 10, 20]) == [100, 200, 110, 220]
-
-
-def test_x0y0x1y1_to_x0y0wh():
-    assert x0y0x1y1_to_x0y0wh([100, 200, 110, 220]) == [100, 200, 10, 20]
-
-
 def test_cxcywh_to_x0y0wh_int():
     result = cxcywh_to_x0y0wh_trunc_int([100, 200, 10.9, 21.])
     assert result == [95, 190, 10, 21]

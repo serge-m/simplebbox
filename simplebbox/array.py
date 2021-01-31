@@ -42,102 +42,96 @@ def x0y0x1y1_to_x0y0wh(x0y0x1y1: list_or_tuple) -> list_or_tuple:
     ))
 
 
-def cxcywh_to_x0y0wh_round_int(cxcywh: list_or_tuple) -> list_or_tuple:
+def cxcywh_to_x0y0wh(cxcywh: list_or_tuple, type_conversion_fn: lambda x: x) -> list_or_tuple:
     """
-    Converts a bounding box from format (center x, center y, width, height) to
-    integer (min x, min y, width, height). Floats are rounded.
+    Converts a bounding box from format
+    (center x, center y, width, height) to
+    (min x, min y, width, height).
+
+    Rounding function can be used as `type_conversion_fn` to get integer results instead of float.
     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
 
-    >>> cxcywh_to_x0y0wh_round_int([100, 200, 10, 20])
+    >>> cxcywh_to_x0y0wh([100, 200, 10, 20], type_conversion_fn=round)
     [95, 190, 10, 20]
-    >>> cxcywh_to_x0y0wh_round_int([100, 200, 11, 21])
+    >>> cxcywh_to_x0y0wh([100, 200, 11, 21], type_conversion_fn=round)
     [94, 190, 11, 21]
-    >>> cxcywh_to_x0y0wh_round_int([100., 200., 11., 21.])
+    >>> cxcywh_to_x0y0wh([100., 200., 11., 21.], type_conversion_fn=round)
     [94, 190, 11, 21]
-    >>> cxcywh_to_x0y0wh_round_int([100, 200, 10.8, 21.8])
+    >>> cxcywh_to_x0y0wh([100, 200, 10.8, 21.8], type_conversion_fn=round)
     [95, 189, 11, 22]
-    >>> cxcywh_to_x0y0wh_round_int([100.5, 200.5, 10., 20.])
+    >>> cxcywh_to_x0y0wh([100.5, 200.5, 10., 20.], type_conversion_fn=round)
     [96, 190, 10, 20]
     """
     cx, cy, w, h = cxcywh
-    x0 = round(cx - w / 2)
-    y0 = round(cy - h / 2)
+    x0 = cx - w / 2
+    y0 = cy - h / 2
     return type(cxcywh)((
-        x0,
-        y0,
-        round(w),
-        round(h)
+        type_conversion_fn(x0),
+        type_conversion_fn(y0),
+        type_conversion_fn(w),
+        type_conversion_fn(h)
     ))
 
 
-def cxcywh_to_x0y0wh_trunc_int(cxcywh: list_or_tuple) -> list_or_tuple:
+def cxcywh_to_x0y0wh_int_div(cxcywh: list_or_tuple, type_conversion_fn=lambda x: x) -> list_or_tuple:
     """
-    Converts a bounding box from format (center x, center y, width, height) to
-    integer (min x, min y, width, height) using only integer operations.
+    Converts a bounding box from format
+    (center x, center y, width, height) to
+    (min x, min y, width, height)
+
+    using integer operations.
+
+    Type conversion function `type_conversion_fn` can be used to get results as floats.
+
     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
 
-    >>> cxcywh_to_x0y0wh_trunc_int([100, 200, 10, 20])
+    >>> cxcywh_to_x0y0wh_int_div([100, 200, 10, 20])
     [95, 190, 10, 20]
-    >>> cxcywh_to_x0y0wh_trunc_int([100, 200, 11, 21])
+    >>> cxcywh_to_x0y0wh_int_div([100, 200, 11, 21])
     [95, 190, 11, 21]
-    >>> cxcywh_to_x0y0wh_trunc_int([100., 200., 11., 21.])
+    >>> cxcywh_to_x0y0wh_int_div([100., 200., 11., 21.])
     [95, 190, 11, 21]
-    >>> cxcywh_to_x0y0wh_trunc_int([100, 200, 10.8, 21.8])
+    >>> cxcywh_to_x0y0wh_int_div([100, 200, 10.8, 21.8])
     [95, 190, 10, 21]
-    >>> cxcywh_to_x0y0wh_trunc_int([100.5, 200.5, 10., 20.])
+    >>> cxcywh_to_x0y0wh_int_div([100.5, 200.5, 10., 20.])
     [95, 190, 10, 20]
     """
     cx, cy, w, h = cxcywh
     x0 = cx - w // 2
     y0 = cy - h // 2
     return type(cxcywh)((
-        int(x0),
-        int(y0),
-        int(w),
-        int(h)
+        type_conversion_fn(x0),
+        type_conversion_fn(y0),
+        type_conversion_fn(w),
+        type_conversion_fn(h)
     ))
 
 
-def cxcywh_to_x0y0wh_float(cxcywh: list_or_tuple) -> list_or_tuple:
-    """
-    Converts a bounding box from format (center x, center y, width, height) to
-    float (min x, min y, width, height).
-    In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-    """
-
-    return type(cxcywh)((
-        cxcywh[0] - cxcywh[2] / 2.0,
-        cxcywh[1] - cxcywh[3] / 2.0,
-        float(cxcywh[2]),
-        float(cxcywh[3])
-    ))
-
-
-def cxcywh_to_x0y0x1y1_round_int(cxcywh: list_or_tuple) -> list_or_tuple:
+def cxcywh_to_x0y0x1y1(cxcywh: list_or_tuple, type_conversion_fn=lambda x: x) -> list_or_tuple:
     """
     Converts a bounding box from format (center x, center y, width, height) to
     integer (min x, min y, max x, max y). Floats are rounded.
     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
 
-    >>> cxcywh_to_x0y0x1y1_round_int([100, 200, 10, 20])
+    >>> cxcywh_to_x0y0x1y1([100, 200, 10, 20], type_conversion_fn=round)
     [95, 190, 105, 210]
-    >>> cxcywh_to_x0y0x1y1_round_int([100, 200, 11, 21])
+    >>> cxcywh_to_x0y0x1y1([100, 200, 11, 21], type_conversion_fn=round)
     [94, 190, 105, 211]
-    >>> cxcywh_to_x0y0x1y1_round_int([100., 200., 11., 21.])
+    >>> cxcywh_to_x0y0x1y1([100., 200., 11., 21.], type_conversion_fn=round)
     [94, 190, 105, 211]
-    >>> cxcywh_to_x0y0x1y1_round_int([100, 200, 10.8, 21.8])
+    >>> cxcywh_to_x0y0x1y1([100, 200, 10.8, 21.8], type_conversion_fn=round)
     [95, 189, 106, 211]
-    >>> cxcywh_to_x0y0x1y1_round_int([100.5, 200.5, 10., 20.])
+    >>> cxcywh_to_x0y0x1y1([100.5, 200.5, 10., 20.], type_conversion_fn=round)
     [96, 190, 106, 210]
     """
     cx, cy, w, h = cxcywh
-    x0 = round(cx - w / 2)
-    y0 = round(cy - h / 2)
+    x0 = type_conversion_fn(cx - w / 2)
+    y0 = type_conversion_fn(cy - h / 2)
     return type(cxcywh)((
         x0,
         y0,
-        x0 + round(w),
-        y0 + round(h)
+        type_conversion_fn(x0 + w),
+        type_conversion_fn(y0 + h)
     ))
 
 

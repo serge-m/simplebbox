@@ -13,75 +13,60 @@ class ArrayProcessor:
         Converts a bounding box from format
         (min x, min y, width, height) to
         (min x, min y, max x, max y).
+
         In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
+
+        The function can process batch inputs. In this case representation of each bounding box
+        must be stored as the last axis of the array.
+
         """
-        arr = atleast_2d(x0y0wh)
+        arr = x0y0wh
         res = [
             arr[..., 0], arr[..., 1],
             arr[..., 0] + arr[..., 2], arr[..., 1] + arr[..., 3]
         ]
-        return self.stack(res).reshape(*x0y0wh.shape[:-1], len(res))
+        return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
     def x0y0x1y1_to_x0y0wh(self, x0y0x1y1):
         """
         Converts a bounding box from format
         (min x, min y, max x, max y) to
         (min x, min y, width, height).
+
         In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
+
+        The function can process batch inputs. In this case representation of each bounding box
+        must be stored as the last axis of the array.
         """
-        arr = atleast_2d(x0y0x1y1)
+        arr = x0y0x1y1
         res = [
             arr[..., 0], arr[..., 1],
             arr[..., 2] - arr[..., 0], arr[..., 3] - arr[..., 1]
         ]
-        return self.stack(res).reshape(*x0y0x1y1.shape[:-1], len(res))
+        return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
+    def cxcywh_to_x0y0wh(self, cxcywh, convert_fn=lambda x: x):
+        """
+        Converts a bounding box from format
+        (center x, center y, width, height) to
+        (min x, min y, width, height).
 
-# def cxcywh_to_x0y0wh_round_int(cxcywh: np.ndarray, dtype=np.int) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (center x, center y, width, height) to
-#     integer (min x, min y, width, height). Floats are rounded.
-#     In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
-#
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 10, 20]))
-#     >>> np.array_equal(res, [95, 190, 10, 20])
-#     True
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 11, 21]))
-#     >>> np.array_equal(res, [94, 190, 11, 21])
-#     True
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([100., 200., 11., 21.]))
-#     >>> np.array_equal(res, [94, 190, 11, 21])
-#     True
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 10.8, 21.8]))
-#     >>> np.array_equal(res, [95, 189, 11, 22])
-#     True
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([100.5, 200.5, 10., 20.]))
-#     >>> np.array_equal(res, [96, 190, 10, 20])
-#     True
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([[100.5, 200.5, 10., 20.]]).T)
-#     >>> np.array_equal(res, np.array([[96, 190, 10, 20]]).T)
-#     True
-#     >>> res = cxcywh_to_x0y0wh_round_int(np.array([
-#     ...     [100, 200, 10, 20],
-#     ...     [100, 200, 11, 21]
-#     ... ]).T)
-#     >>> np.array_equal(res, np.array([
-#     ...     [95, 190, 10, 20],
-#     ...     [94, 190, 11, 21],
-#     ... ]).T)
-#     True
-#     """
-#     assert np.issubdtype(dtype, np.integer)
-#     cx, cy, w, h = cxcywh
-#     x0 = np.around(cx - w / 2)
-#     y0 = np.around(cy - h / 2)
-#     return np.asarray((
-#         x0,
-#         y0,
-#         np.around(w),
-#         np.around(h)
-#     ), dtype=dtype)
-#
+        Rounding function can be specified as a parameter :convert_fn:
+        get integer values instead of float.
+
+        In the coordinate system of a screen (min x, min y) corresponds to the left top corner of the box.
+
+        The function can process batch inputs. In this case representation of each bounding box
+        must be stored as the last axis of the array.
+
+        """
+        arr = cxcywh
+        res = [
+            convert_fn(arr[..., 0] - arr[..., 2] / 2), convert_fn(arr[..., 1] - arr[..., 2] / 2),
+            convert_fn(arr[..., 2]), convert_fn(arr[..., 3])
+        ]
+        return self.stack(res).reshape(*arr.shape[:-1], len(res))
+
 #
 # def cxcywh_to_x0y0wh_trunc_int(cxcywh: np.ndarray, dtype=np.int) -> np.ndarray:
 #     """

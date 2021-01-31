@@ -7,6 +7,7 @@ from pytest import approx
 
 from simplebbox.numpy_array import bbox_numpy
 from simplebbox.torch_tensor import bbox_torch
+import simplebbox.array as bbox_array
 
 
 class equal_np_array:
@@ -48,6 +49,9 @@ def test_x0y0wh_to_x0y0x1y1():
     in2 = [10, 20, 10, 20]
     out2 = [10, 20, 20, 40]
 
+    assert bbox_array.x0y0wh_to_x0y0x1y1(in1) == out1
+    assert bbox_array.x0y0wh_to_x0y0x1y1(in2) == out2
+
     assert bbox_numpy.x0y0wh_to_x0y0x1y1(np.array(in1)) == equal_np_array(out1, dtype='int')
     assert bbox_numpy.x0y0wh_to_x0y0x1y1(np.array([in1])) == equal_np_array([out1], dtype='int')
     assert bbox_numpy.x0y0wh_to_x0y0x1y1(np.array([in1, in2])) == equal_np_array([out1, out2], dtype='int')
@@ -65,6 +69,9 @@ def test_x0y0x1y1_to_x0y0wh():
     in2 = [10, 20, 20, 40]
     out2 = [10, 20, 10, 20]
 
+    assert bbox_array.x0y0x1y1_to_x0y0wh(in1) == out1
+    assert bbox_array.x0y0x1y1_to_x0y0wh(in2) == out2
+
     assert bbox_numpy.x0y0x1y1_to_x0y0wh(np.array(in1)) == equal_np_array(out1, dtype='int')
     assert bbox_numpy.x0y0x1y1_to_x0y0wh(np.array([in1])) == equal_np_array([out1], dtype='int')
     assert bbox_numpy.x0y0x1y1_to_x0y0wh(np.array([in1, in2])) == equal_np_array([out1, out2], dtype='int')
@@ -76,9 +83,39 @@ def test_x0y0x1y1_to_x0y0wh():
     assert bbox_torch.x0y0x1y1_to_x0y0wh(torch.tensor([[in1, in2]])) == equal_tensor([[out1, out2]], dtype=torch.long)
 
 
-def test_cxcywh_to_x0y0wh_int():
-    result = cxcywh_to_x0y0wh_trunc_int([100, 200, 10.9, 21.])
-    assert result == [95, 190, 10, 21]
+def test_cxcywh_to_x0y0wh():
+    assert bbox_numpy.x0y0x1y1_to_x0y0wh(np.array(in1)) == equal_np_array(out1, dtype='int')
+
+    assert bbox_torch.x0y0x1y1_to_x0y0wh(torch.tensor(in1)) == equal_tensor(out1, dtype=torch.long)
+
+    res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 10, 20]))
+    np.array_equal(res, [95, 190, 10, 20])
+
+    res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 11, 21]))
+    np.array_equal(res, [94, 190, 11, 21])
+
+    res = cxcywh_to_x0y0wh_round_int(np.array([100., 200., 11., 21.]))
+    np.array_equal(res, [94, 190, 11, 21])
+
+    res = cxcywh_to_x0y0wh_round_int(np.array([100, 200, 10.8, 21.8]))
+    # np.array_equal(res, [95, 189, 11, 22])
+    # resres = cxcywh_to_x0y0wh_round_int(np.array([100.5, 200.5, 10., 20.]))
+    # >> > np.array_equal(res, [96, 190, 10, 20])
+    # True
+    # >> > res = cxcywh_to_x0y0wh_round_int(np.array([[100.5, 200.5, 10., 20.]]).T)
+    # >> > np.array_equal(res, np.array([[96, 190, 10, 20]]).T)
+    # True
+    # >> > res = cxcywh_to_x0y0wh_round_int(np.array([
+    #     ...[100, 200, 10, 20],
+    #     ...[100, 200, 11, 21]
+    #         ...]).T)
+    # >> > np.array_equal(res, np.array([
+    #     ...[95, 190, 10, 20],
+    #     ...[94, 190, 11, 21],
+    #     ...]).T)
+    # True
+    # result = cxcywh_to_x0y0wh_trunc_int([100, 200, 10.9, 21.])
+    # assert result == [95, 190, 10, 21]
 
 
 def test_cxcywh_to_x0y0wh_float():
