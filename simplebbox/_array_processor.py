@@ -126,45 +126,46 @@ class ArrayProcessor:
         ]
         return self.stack(res).reshape(*arr.shape[:-1], len(res))
 
+    def xyxy_abs_to_rel(self, xyxy, image_wh):
+        """
+        Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from absolute to relative values
+        with respect to image width and height.
 
-# def xyxy_abs_to_rel(xyxy: np.ndarray, image_wh: np.ndarray) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from absolute to relative values
-#     with respect to image width and height.
-#
-#     Parameters
-#     ----------
-#     image_wh : tuple of width and height of image
-#
-#     >>> xyxy_abs_to_rel([100, 200, 200, 50], [400, 200])
-#     [0.25, 1.0, 0.5, 0.25]
-#     """
-#     x0, y0, x1, y1 = xyxy
-#     w, h = image_wh
-#     return type(xyxy)((
-#         x0 / w, y0 / h,
-#         x1 / w, y1 / h
-#     ))
-#
-#
-# def xyxy_rel_to_abs_int(xyxy: np.ndarray, image_wh: np.ndarray) -> np.ndarray:
-#     """
-#     Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from relative to absolute values
-#     with respect to image width and height.
-#
-#     Parameters
-#     ----------
-#     xyxy : tuple or list. (x, y, width, height) or (x, y, x, y).
-#     image_wh : tuple of width and height of image
-#
-#     >>> xyxy_rel_to_abs_int([0.25, 1.0, 0.5, 0.25], [400, 200])
-#     [100, 200, 200, 50]
-#     """
-#     x0, y0, x1, y1 = xyxy
-#     w, h = image_wh
-#     return type(xyxy)((
-#         int(x0 * w), int(y0 * h),
-#         int(x1 * w), int(y1 * h)
-#     ))
-#
-#
+        Parameters
+        ----------
+        image_wh : tuple of width and height of image
+
+        """
+        x0 = xyxy[..., 0]
+        y0 = xyxy[..., 1]
+        x1 = xyxy[..., 2]
+        y1 = xyxy[..., 3]
+        w = image_wh[..., 0]
+        h = image_wh[..., 1]
+        return self.stack([
+            x0 / w, y0 / h,
+            x1 / w, y1 / h
+        ])
+
+    def xyxy_rel_to_abs(self, xyxy, image_wh):
+        """
+        Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from relative to absolute values
+        with respect to image width and height.
+
+        Parameters
+        ----------
+        xyxy : tuple or list. (x, y, width, height) or (x, y, x, y).
+        image_wh : tuple of width and height of image
+
+
+        """
+        x0 = xyxy[..., 0]
+        y0 = xyxy[..., 1]
+        x1 = xyxy[..., 2]
+        y1 = xyxy[..., 3]
+        w = image_wh[..., 0]
+        h = image_wh[..., 1]
+        return self.stack([
+            x0 * w, y0 * h,
+            x1 * w, y1 * h
+        ])

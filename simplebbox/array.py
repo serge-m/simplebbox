@@ -183,7 +183,7 @@ def xyxy_abs_to_rel(xyxy: list_or_tuple, image_wh: pair) -> list_or_tuple:
     ))
 
 
-def xyxy_rel_to_abs_int(xyxy: list_or_tuple, image_wh: pair) -> list_or_tuple:
+def xyxy_rel_to_abs(xyxy: list_or_tuple, image_wh: pair, convert_fn=lambda x: x) -> list_or_tuple:
     """
     Converts a bounding box from format (x, y, width, height) or (x, y, x, y) from relative to absolute values
     with respect to image width and height.
@@ -193,12 +193,12 @@ def xyxy_rel_to_abs_int(xyxy: list_or_tuple, image_wh: pair) -> list_or_tuple:
     xyxy : tuple or list. (x, y, width, height) or (x, y, x, y).
     image_wh : tuple of width and height of image
 
-    >>> xyxy_rel_to_abs_int([0.25, 1.0, 0.5, 0.25], [400, 200])
+    >>> xyxy_rel_to_abs([0.25, 1.0, 0.5, 0.25], [400, 200], int)
     [100, 200, 200, 50]
     """
     x0, y0, x1, y1 = xyxy
     w, h = image_wh
     return type(xyxy)((
-        int(x0 * w), int(y0 * h),
-        int(x1 * w), int(y1 * h)
+        convert_fn(x0 * w), convert_fn(y0 * h),
+        convert_fn(x1 * w), convert_fn(y1 * h)
     ))

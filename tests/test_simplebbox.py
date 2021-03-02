@@ -134,7 +134,8 @@ def test_cxcywh_to_x0y0x1y1_float():
     assert bbox_array.cxcywh_to_x0y0x1y1([100, 200, 10, 20], float) == approx([95., 190., 105., 210.])
     assert bbox_array.cxcywh_to_x0y0x1y1([100, 200, 11, 21], float) == approx([94.5, 189.5, 105.5, 210.5])
     assert bbox_array.cxcywh_to_x0y0x1y1([100., 200., 11., 21.], float) == approx([94.5, 189.5, 105.5, 210.5])
-    assert bbox_array.cxcywh_to_x0y0x1y1([100, 200, 10.8, 20.8], float) == approx([95 - 0.4, 190 - 0.4, 105 + 0.4, 210 + 0.4])
+    assert bbox_array.cxcywh_to_x0y0x1y1([100, 200, 10.8, 20.8], float) == approx(
+        [95 - 0.4, 190 - 0.4, 105 + 0.4, 210 + 0.4])
 
 
 def test_cxcywh_to_x0y0x1y1():
@@ -174,3 +175,29 @@ def test_cxcywh_to_x0y0x1y1_int_div():
     assert bbox_torch.cxcywh_to_x0y0x1y1_int_div(torch.tensor([[in1, in2]])) == equal_tensor([[out1, out2]],
                                                                                              dtype=torch.long)
 
+
+def test_xyxy_abs_to_rel():
+    in_bbox = [100, 200, 200, 50]
+    wh = [400, 200]
+    assert bbox_numpy.xyxy_abs_to_rel(np.array(in_bbox), np.array(wh)) == equal_np_array([0.25, 1.0, 0.5, 0.25])
+    assert bbox_torch.xyxy_abs_to_rel(torch.tensor(in_bbox), torch.tensor(wh)) == equal_tensor([0.25, 1.0, 0.5, 0.25])
+
+    in_bbox2 = [0, 5, 5, 10]
+    wh2 = [10, 10]
+    assert bbox_numpy.xyxy_abs_to_rel(np.array([in_bbox, in_bbox2]), np.array([wh, wh2])) == \
+           equal_np_array([
+               [0.25, 1.0, 0.5, 0.25],
+               [0., 0.5, 0.5, 1.]
+           ])
+    assert bbox_torch.xyxy_abs_to_rel(torch.tensor([in_bbox, in_bbox2]), torch.tensor([wh, wh2])) == \
+           equal_tensor([
+               [0.25, 1.0, 0.5, 0.25],
+               [0., 0.5, 0.5, 1.]
+           ])
+
+
+def test_xyxy_rel_to_abs():
+    in_bbox, wh = ([0.25, 1.0, 0.5, 0.25], [400, 200])
+
+    assert bbox_numpy.xyxy_rel_to_abs(np.array(in_bbox), np.array(wh)) == equal_np_array([100., 200., 200., 50.])
+    assert bbox_torch.xyxy_rel_to_abs(torch.tensor(in_bbox), torch.tensor(wh)) == equal_tensor([100., 200., 200., 50.])
