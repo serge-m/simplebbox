@@ -3,6 +3,19 @@ History
 =======
 
 
+
+0.0.8 (2021-03-02)
+------------------
+
+* implementation of batch processing for torch and numpy
+
+* simplification of float/int conversions, merged some tests for array/tensor implementations
+
+* reworked a conversion with integer divisions
+
+Interfaces (and names) of array processing functions have changed. This is a breaking change.
+
+
 0.0.7 (2020-12-17)
 ------------------
 
