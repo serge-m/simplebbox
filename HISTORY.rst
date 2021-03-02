@@ -4,7 +4,7 @@ History
 
 
 
-0.0.8 (2021-03-02)
+0.0.9 (2021-03-02)
 ------------------
 
 * implementation of batch processing for torch and numpy
