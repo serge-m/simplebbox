@@ -7,7 +7,7 @@ python:
 - 3.6
 
 before_install:
-  - python -m pip install --upgrade pip
+- python -m pip install --upgrade pip
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -U tox-travis
@@ -18,14 +18,14 @@ script: tox
 # Assuming you have installed the travis-ci CLI tool, after you
 # create the Github repo and add it to Travis, run the
 # following command to finish PyPI deployment setup:
-# $ travis encrypt --add deploy.password
+# $ travis encrypt --pro --add deploy.password
 deploy:
   provider: pypi
   edge: true
   distributions: sdist bdist_wheel
-  username: "__token__"
+  username: __token__
   password:
-    secure: XSMAXqlNmGGIR60WWAWpDQ3ZUd6tcKhaV1G2RL1ZkiSX3NSToalhQNIhmA2pSXq4FrNXQyIPKuIherPpZm4RE0U4DKsvCIcqPgE1CUKzH0GDDr0Y+wIUUd25v+6WIHDKhEqArml6fPG6E4S0bQ1Y+d4xNrrupOHqtaRFMVTX0fQROY+OUXPO0Vm8BI15FDXbnhhoOCPmVWey90fsRgpz3hdiYrSWrtSAKZH9DQ4YGqR67d8/8XuKcgmZ1tpmbz3bxEGovb5JpoerDSgnUDUEukQzeyFz/bWpCRZYIAL11fg0cmZ9nLfg8WGurzTIz0e1oYjgUm4+EhouFUiRVOuotQj5Ld4hmUP0lPKBMN9mLvB0x/uystEsxq15IzXl3YOuETosNixjfEV00OCY3XOxKZzE1YkIpomwHCAEzxXKYj15aXztoVTt0csrlzIvHscLJAS7fVnX1OgSc4MZz2e/emUvIw0M1wh8F319ni1p7ZnRiJ/sATIyyPmLvMwZXsd9UtXUX0vlbfSAyBoJjIyeYDEs7/C4lSMDZQ66IrNtvPXkWBRNtz6o9RZ1HsdjryanSJQoiCAat3EVyC46QTbDeg+wAzHyOfqoXjkefY215+RDssDUDrNF0QGjBMPYlGR2VKkVsjaT+iMiYnS/jRb9NhLu6sLD38a1CPm0/vtMzCg=
+    secure: T+FwruJZqmugwhdF56MktoWnsgriDdx63GjDasKqXEqC127xCIkdVABy9iZ2MgKzR/ip1iSE05Po0x4okhquZBoLudY6OpC+38Z/jsg08NT5/rX8H4+05uJyS6pEAcwXkN+NCzWJ+mitFTrhemTDarmLFuqW6vNFv1G3IsDIaO6fq8ZqHH1Ne0USRNH9S8WqD/u96MfAffhedNfTYRgHZjb9MRAE0C9o/iaFIg3eeGjXsGLqfYyyYaVW6UhB9Ae6DjtXTMb7irtvyZ0sKU3rqpYnHhoasai1JEoyjd8i9lAGvYNrNFXnrlA909AuK3RmYHzS1EGmvcEw6zQwQ1aJlolYUucGRxnQN4pv1xRNXZKrH7sUfl4xtSZ5pvxsLpAef64zQRo0Q2051zWJvA4+CFlcyS/uNnDTwKoYm4zGd2xsAObapurCUV2kuwkCgiwPmIsXPBHh8xdAo3t0cJ1quGXromfJoh8g6veYBRamQKHHZLl7u1+EbMaW0vTn/IrnyG/t6cbdCScyxjH4ihxbXviL2sEUnTzXH7RZHCpetJFffTzsY5nPAuMecZeuYA5GbQQd99fIuCzculgBmpGAwRQKUYU4EhKPSMVWULOZDw/4DGhS5jyimF+sAqseVGmlxeW7FmBU+Y6wsf2T/ydjdZyrCsFVu3Dj/dASkqCkgK8=
   on:
     tags: true
     repo: serge-m/simplebbox
